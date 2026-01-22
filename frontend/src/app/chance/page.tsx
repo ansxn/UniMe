@@ -16,7 +16,7 @@ export default function ChanceMe() {
         top6: '',
         ecs: ''
     });
-    
+
     const [result, setResult] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -29,12 +29,12 @@ export default function ChanceMe() {
     };
 
     const isFormValid = () => {
-        return formData.school.trim() !== '' && 
-               formData.program.trim() !== '' && 
-               formData.top6.trim() !== '' &&
-               !isNaN(Number(formData.top6)) &&
-               Number(formData.top6) >= 0 &&
-               Number(formData.top6) <= 100;
+        return formData.school.trim() !== '' &&
+            formData.program.trim() !== '' &&
+            formData.top6.trim() !== '' &&
+            !isNaN(Number(formData.top6)) &&
+            Number(formData.top6) >= 0 &&
+            Number(formData.top6) <= 100;
     };
 
     const handleSubmit = async () => {
@@ -48,7 +48,7 @@ export default function ChanceMe() {
         setResult(null);
 
         try {
-            const response = await fetch("http://localhost:5001/api/chance-me", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/chance-me`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
@@ -149,7 +149,7 @@ export default function ChanceMe() {
                         >
                             {loading ? 'Calculating...' : 'Calculate My Chances'}
                         </button>
-                        
+
                         <button
                             onClick={handleReset}
                             className="reset-button"
@@ -174,7 +174,7 @@ export default function ChanceMe() {
                         </div>
                         <div className="disclaimer">
                             <p>
-                                <strong>Disclaimer:</strong> This prediction is based on historical data and should be used as a general guide only. 
+                                <strong>Disclaimer:</strong> This prediction is based on historical data and should be used as a general guide only.
                                 Actual admission decisions depend on many factors including essays, interviews, and current competition levels.
                             </p>
                         </div>

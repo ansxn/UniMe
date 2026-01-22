@@ -58,10 +58,10 @@ export default function Matches() {
         try {
             const programKey = `${school}_${program}`;
             console.log("Fetching mentors for:", programKey);
-            
-            const response = await fetch(`http://localhost:5001/api/program-mentors/${encodeURIComponent(programKey)}`);
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/program-mentors/${encodeURIComponent(programKey)}`);
             console.log("Response status:", response.status);
-            
+
             if (response.ok) {
                 const data = await response.json();
                 console.log("Mentor data received:", data);
@@ -84,87 +84,87 @@ export default function Matches() {
 
     const downloadPDF = async () => {
         try {
-          setIsDownloading(true);
-          
-          // Get weights from localStorage
-          const preferences = JSON.parse(localStorage.getItem("preferences") || "{}");
-          const weights = {
-            wa: preferences.wa || 0.6,
-            wc: preferences.wc || 0.2,
-            wso: preferences.wso || 0.2
-          };
-          
-          // Get answers from localStorage
-          const answers = JSON.parse(localStorage.getItem("answers") || "{}");
-          
-          // Make a separate API call to get all 100 matches
-          const fullMatchesResponse = await fetch('http://localhost:5001/api/full-matches', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(answers)
-          });
-          
-          if (!fullMatchesResponse.ok) {
-            throw new Error('Failed to fetch full matches data');
-          }
-          
-          const fullMatchesData = await fullMatchesResponse.json();
-          
-          // Format all 100 matches for the PDF
-          interface FullMatch {
-            overall: number;
-            academic: number;
-            campus: number;
-            social: number;
-            school: string;
-            program: string;
-          }
+            setIsDownloading(true);
 
-          const allMatches: [number, number, number, number, string, string][] = fullMatchesData.matches.map((match: FullMatch) => [
-            match.overall,
-            match.academic,
-            match.campus, 
-            match.social,
-            match.school,
-            match.program
-          ]);
-          
-          // Download the PDF with all 100 matches
-          const response = await fetch('http://localhost:5001/api/download-pdf', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              results: allMatches,
-              weights: weights
-            })
-          });
-          
-          // Rest of the function remains the same...
-          if (!response.ok) {
-            throw new Error('Failed to download PDF');
-          }
-          
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `LinkU_matches_${new Date().toISOString().split('T')[0]}.pdf`;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-          
+            // Get weights from localStorage
+            const preferences = JSON.parse(localStorage.getItem("preferences") || "{}");
+            const weights = {
+                wa: preferences.wa || 0.6,
+                wc: preferences.wc || 0.2,
+                wso: preferences.wso || 0.2
+            };
+
+            // Get answers from localStorage
+            const answers = JSON.parse(localStorage.getItem("answers") || "{}");
+
+            // Make a separate API call to get all 100 matches
+            const fullMatchesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/full-matches`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(answers)
+            });
+
+            if (!fullMatchesResponse.ok) {
+                throw new Error('Failed to fetch full matches data');
+            }
+
+            const fullMatchesData = await fullMatchesResponse.json();
+
+            // Format all 100 matches for the PDF
+            interface FullMatch {
+                overall: number;
+                academic: number;
+                campus: number;
+                social: number;
+                school: string;
+                program: string;
+            }
+
+            const allMatches: [number, number, number, number, string, string][] = fullMatchesData.matches.map((match: FullMatch) => [
+                match.overall,
+                match.academic,
+                match.campus,
+                match.social,
+                match.school,
+                match.program
+            ]);
+
+            // Download the PDF with all 100 matches
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/download-pdf`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    results: allMatches,
+                    weights: weights
+                })
+            });
+
+            // Rest of the function remains the same...
+            if (!response.ok) {
+                throw new Error('Failed to download PDF');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `LinkU_matches_${new Date().toISOString().split('T')[0]}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
         } catch (error) {
-          console.error('Error downloading PDF:', error);
-          alert('Failed to download results. Please try again.');
+            console.error('Error downloading PDF:', error);
+            alert('Failed to download results. Please try again.');
         } finally {
-          setIsDownloading(false);
+            setIsDownloading(false);
         }
-      };
+    };
 
     return (
         <div className="matches-container">
@@ -173,45 +173,45 @@ export default function Matches() {
                     <p className="recommendations-label">Recommendations</p>
                     <h1 className="matches-title">Your Top Uni Matches</h1>
                     <p className="matches-subtitle">
-                        Based on your answers, here are the university programs that 
+                        Based on your answers, here are the university programs that
                         best match your interests and goals. Click on one to learn more!
                     </p>
                 </div>
-            <button 
-                onClick={downloadPDF} 
-                disabled={isDownloading}
-                className="fixed-download-button"
-            >
-                {isDownloading ? (
-                    'Downloading...'
-                ) : (
-                    <>
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            width="20" 
-                            height="20" 
-                            viewBox="0 0 24 24" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            strokeWidth="2" 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            style={{ marginRight: '8px' }}
-                        >
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                        Download PDF Report
-                    </>
-                )}
-            </button>
+                <button
+                    onClick={downloadPDF}
+                    disabled={isDownloading}
+                    className="fixed-download-button"
+                >
+                    {isDownloading ? (
+                        'Downloading...'
+                    ) : (
+                        <>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{ marginRight: '8px' }}
+                            >
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download PDF Report
+                        </>
+                    )}
+                </button>
 
                 <div className="matches-main">
                     <div className="match-list">
                         {matches.map((match, index) => (
-                            <div 
-                                key={index} 
+                            <div
+                                key={index}
                                 className={`match ${selectedMatch === match ? 'selected' : ''}`}
                                 onClick={() => handleClick(match)}
                             >
@@ -221,14 +221,14 @@ export default function Matches() {
                             </div>
                         ))}
                     </div>
-                    
+
                     {selectedMatch && (
                         <div className="popup">
                             <div className="popup-header">
                                 <h2>{selectedMatch.school}</h2>
                                 <p className="program-subtitle">{selectedMatch.program}</p>
                             </div>
-                            
+
                             <div className="match-stats">
                                 <h3>Your match statistics:</h3>
                                 <div className="stats-grid">
@@ -237,12 +237,12 @@ export default function Matches() {
                                     <span className="stat-item">Campus: {formatPercentage(selectedMatch.campus)}</span>
                                 </div>
                             </div>
-                            
+
                             <div className="program-info">
                                 <p>Basic info about this program and what makes it unique. This program focuses on innovative approaches to solving complex problems.</p>
                             </div>
-                         
-                            
+
+
                             <div className="mentors-section">
                                 <h3>Connect with Student Mentors</h3>
                                 <div className="mentors-grid">
@@ -251,14 +251,14 @@ export default function Matches() {
                                             <div key={index} className="mentor-card">
                                                 <h4>{mentor.name}</h4>
                                                 <p className="mentor-details">{mentor.details}</p>
-                                                <div 
+                                                <div
                                                     className="mentor-avatar"
                                                     style={{ backgroundImage: `url(${mentor.avatar})` }}
                                                 ></div>
-                                                <a 
-                                                    href={mentor.linkedin} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer" 
+                                                <a
+                                                    href={mentor.linkedin}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
                                                     className="mentor-button"
                                                 >
                                                     MentorMe!

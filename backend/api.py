@@ -11,7 +11,7 @@ from match_me import INTEREST_MAPPINGS, COURSE_MAPPINGS, INTEREST_DESCRIPTIONS, 
 from chanceMe import predict_admission_chance
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001"])
+CORS(app)  # Allow all origins for production
 
 app.static_folder = 'static'
 
@@ -326,5 +326,6 @@ def get_program_mentors(program_key):
         return jsonify([])
 
 if __name__ == '__main__':
-    print("Starting Flask server on port 5001...")
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    port = int(os.environ.get('PORT', 5001))
+    print(f"Starting Flask server on port {port}...")
+    app.run(host='0.0.0.0', port=port, debug=False)
