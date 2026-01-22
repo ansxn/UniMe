@@ -134,7 +134,7 @@ export default function Quiz() {
             router.push("/matches");
         } catch (error) {
             console.error("Quiz submit error:", error);
-            alert("Failed to submit quiz. Please make sure the backend server is running on port 5001.");
+            alert("Failed to submit quiz. Please try again later.");
         }
     };
 
