@@ -30,12 +30,19 @@ export default function Matches() {
     const [programMentors, setProgramMentors] = useState<Mentor[]>([]);
 
     useEffect(() => {
-        const data = localStorage.getItem("matches");
-        if (data) {
-            const parsedData = JSON.parse(data);
-            // Handle both possible response formats
-            const matchesArray = parsedData.matches || parsedData;
-            setMatches(matchesArray);
+        try {
+            const data = localStorage.getItem("matches");
+            if (data) {
+                const parsedData = JSON.parse(data);
+                // Handle both possible response formats
+                const matchesArray = parsedData.matches || parsedData;
+                if (Array.isArray(matchesArray)) {
+                    setMatches(matchesArray);
+                }
+            }
+        } catch (error) {
+            console.error("Error loading matches from localStorage:", error);
+            setMatches([]);
         }
     }, []);
 

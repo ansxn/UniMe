@@ -11,7 +11,7 @@ from match_me import INTEREST_MAPPINGS, COURSE_MAPPINGS, INTEREST_DESCRIPTIONS, 
 from chanceMe import predict_admission_chance
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"])
+CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001"])
 
 app.static_folder = 'static'
 
@@ -161,9 +161,7 @@ def compute_matches(answers, num_results=10):
 @app.route('/api/match', methods=['POST'])
 def match_api():
     try:
-        print("Request received!")  # Debug print
         data = request.json
-        print("Received data:", data)  # Debug print
         matches = compute_matches(data)
         return jsonify(matches)
     except Exception as e:
@@ -173,9 +171,7 @@ def match_api():
 @app.route('/api/chance-me', methods=['POST'])
 def chance_me_api():
     try:
-        print("ChanceMe request received!")  # Debug print
         data = request.json
-        print("Received ChanceMe data:", data)  # Debug print
         
         # Extract data from request
         university = data.get('school', '')
@@ -189,7 +185,7 @@ def chance_me_api():
             ecs = [ec.strip() for ec in ecs_input.split(',') if ec.strip()]
         
         # Path to CSV file (adjust this path as needed)
-        csv_path = 'backend/admissionsData.csv'
+        csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'admissionsData.csv')
         
         # Get prediction
         result = predict_admission_chance(csv_path, university, program, top6_avg, ecs)

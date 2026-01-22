@@ -262,14 +262,12 @@ def score_academic(p, user_answers):
     total_weight = sum(weights.values())
     
     num_scores = []
-    weight_sum = 0
     for k, s, i in zip(keys, vals, range(len(keys))):
         prog_val = p['academic'].get(k, 3)
         # Closer values should score higher (5 point scale, max difference is 4)
         similarity = 1 - (abs(prog_val - s) / 4.0)
         weight = weights[k]
         num_scores.append(similarity * weight)
-        weight_sum += weight
         
     # Normalize by weights
     num_score = sum(num_scores) / total_weight * 0.3
@@ -364,15 +362,6 @@ def score_social(p, user_answers):
     # Average all scores with equal weighting
     return (ns_score + spt_score + cl_score + cev_score) / 4
 
-# Add these imports at the top of the file
-import datetime
-from io import BytesIO
-from reportlab.lib.pagesizes import letter, landscape
-from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch
-import os
 
 def generate_matches_pdf_bytes(results, weights=None):
     """
@@ -435,7 +424,7 @@ def generate_matches_pdf_bytes(results, weights=None):
     content = []
     
     # Title
-    content.append(Paragraph("LinkU: Your University Program Matches", styles['Title']))
+    content.append(Paragraph("UniMe: Your University Program Matches", styles['Title']))
     content.append(Spacer(1, 0.25*inch))
     
     # Summary of weights
