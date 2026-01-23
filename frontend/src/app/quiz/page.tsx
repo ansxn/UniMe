@@ -251,6 +251,9 @@ export default function Quiz() {
 
     return (
         <div className="quiz-container">
+            <Link href="/" className="back-button">
+                ← Back to Home
+            </Link>
             <div className="header">
                 <h1>get matched for free</h1>
                 <p className="subtext">Based on Ontario University Data</p>

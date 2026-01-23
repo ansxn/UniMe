@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import './matches.css';
 
 interface Match {
@@ -168,6 +169,9 @@ export default function Matches() {
 
     return (
         <div className="matches-container">
+            <Link href="/" className="back-button">
+                ← Back to Home
+            </Link>
             <div className="matches-content">
                 <div className="matches-header">
                     <p className="recommendations-label">Recommendations</p>

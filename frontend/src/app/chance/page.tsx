@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import Link from 'next/link';
 import './chance.css';
 
 interface ChanceMeFormData {
@@ -82,6 +83,9 @@ export default function ChanceMe() {
 
     return (
         <div className="chance-container">
+            <Link href="/" className="back-button">
+                ← Back to Home
+            </Link>
             <div className="header">
                 <h1>calculate your chances</h1>
                 <p className="subtext">Find your admission chances based on real admissions data. These results do not guarantee your acceptance.</p>
