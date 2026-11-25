@@ -32,7 +32,7 @@ body {
 .matches-container {
     width: 100%;
     min-height: 100vh;
-    background: url('./matches-background.PNG') no-repeat center top;
+    background: url('../backgrounds/matches.webp') no-repeat center top;
     background-size: cover;
     position: relative;
 }

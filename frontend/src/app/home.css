@@ -5,7 +5,7 @@ html {
 
 .home {
     width: 100vw;
-    background: url('./background.PNG') no-repeat center calc(-20vh);
+    background: url('./backgrounds/home.webp') no-repeat center calc(-20vh);
     opacity: 1;
     background-size: cover;
 }
