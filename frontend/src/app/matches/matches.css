@@ -417,3 +417,15 @@ body {
         gap: 15px;
     }
 }
+.download-error {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    max-width: 280px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #ffb4b4;
+    font-size: 14px;
+    z-index: 1000;
+}

@@ -52,6 +52,8 @@ export default function Quiz() {
     const [hasStarted, setHasStarted] = useState(false);
     const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
     const [confirmedCheckboxIds, setConfirmedCheckboxIds] = useState<string[]>([]);
+    const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
     const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
     const router = useRouter();
 
@@ -185,8 +187,10 @@ export default function Quiz() {
 
     // Submit handler
     const handleSubmit = async () => {
+        setSubmitting(true);
+        setSubmitError(null);
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/match`, {
+            const res = await fetch('/api/match', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(answers),
@@ -198,10 +202,13 @@ export default function Quiz() {
 
             const matches = await res.json();
             localStorage.setItem("matches", JSON.stringify(matches));
+            // The matches page re-sends these to build the full PDF report.
+            localStorage.setItem("answers", JSON.stringify(answers));
             router.push("/matches");
         } catch (error) {
             console.error("Quiz submit error:", error);
-            alert("Failed to submit quiz. Please try again later.");
+            setSubmitError("We couldn't get your matches right now. Please try again in a moment.");
+            setSubmitting(false);
         }
     };
 
@@ -402,30 +409,26 @@ export default function Quiz() {
 
             <div style={{ textAlign: 'center', marginTop: '40px' }}>
                 <button
-                    disabled={!isQuizComplete()}
+                    disabled={!isQuizComplete() || submitting}
                     onClick={handleSubmit}
                     style={{
                         padding: '15px 30px',
                         fontSize: '18px',
                         fontWeight: 'bold',
-                        backgroundColor: isQuizComplete() ? '#28a745' : '#ccc',
+                        backgroundColor: isQuizComplete() && !submitting ? '#28a745' : '#ccc',
                         color: 'white',
                         border: 'none',
                         borderRadius: '8px',
-                        cursor: isQuizComplete() ? 'pointer' : 'not-allowed',
+                        cursor: isQuizComplete() && !submitting ? 'pointer' : 'not-allowed',
                         transition: 'background-color 0.2s ease'
                     }}
                 >
-                    Submit Quiz
+                    {submitting ? 'Finding your matches…' : 'Submit Quiz'}
                 </button>
-                {/* Debug section */}
-                <div>
-                    {/* Add padding to the debug section */}
-                    <div style={{ padding: '40px' }}>
-                        {/* Debug info (optional): */}
-                        {/* <pre>{JSON.stringify(answers, null, 2)}</pre> */}
-                    </div>
-                </div>
+                {submitError && (
+                    <p role="alert" style={{ color: '#ffb4b4', marginTop: '16px' }}>{submitError}</p>
+                )}
+                <div style={{ padding: '40px' }} />
             </div>
         </div>
     );

@@ -24,11 +24,22 @@ interface Mentor {
     linkedin: string;
 }
 
+// How closely the returned mentors relate to the selected program
+type MentorMatch = 'program' | 'school' | 'general';
+
+const MENTOR_HEADINGS: Record<MentorMatch, string> = {
+    program: 'Connect with Student Mentors',
+    school: 'Mentors at this school',
+    general: "No mentors in this program yet — here are some UniMe mentors",
+};
+
 export default function Matches() {
     const [matches, setMatches] = useState<Match[]>([]);
     const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
     const [isDownloading, setIsDownloading] = useState(false);
     const [programMentors, setProgramMentors] = useState<Mentor[]>([]);
+    const [mentorMatch, setMentorMatch] = useState<MentorMatch>('program');
+    const [downloadError, setDownloadError] = useState<string | null>(null);
 
     useEffect(() => {
         try {
@@ -57,20 +68,12 @@ export default function Matches() {
 
     const fetchMentors = async (school: string, program: string) => {
         try {
-            const programKey = `${school}_${program}`;
-            console.log("Fetching mentors for:", programKey);
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/program-mentors/${encodeURIComponent(programKey)}`);
-            console.log("Response status:", response.status);
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Mentor data received:", data);
-                setProgramMentors(data);
-            } else {
-                console.error("API returned error:", await response.text());
-                setProgramMentors([]); // Empty if not found
-            }
+            const params = new URLSearchParams({ school, program });
+            const response = await fetch(`/api/program-mentors?${params}`);
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            const data: { match: MentorMatch; mentors: Mentor[] } = await response.json();
+            setProgramMentors(data.mentors);
+            setMentorMatch(data.match);
         } catch (error) {
             console.error("Error fetching mentors:", error);
             setProgramMentors([]);
@@ -87,73 +90,28 @@ export default function Matches() {
         try {
             setIsDownloading(true);
 
-            // Get weights from localStorage
-            const preferences = JSON.parse(localStorage.getItem("preferences") || "{}");
-            const weights = {
-                wa: preferences.wa || 0.6,
-                wc: preferences.wc || 0.2,
-                wso: preferences.wso || 0.2
-            };
-
-            // Get answers from localStorage
-            const answers = JSON.parse(localStorage.getItem("answers") || "{}");
-
-            // Make a separate API call to get all 100 matches
-            const fullMatchesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/full-matches`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(answers)
-            });
-
-            if (!fullMatchesResponse.ok) {
-                throw new Error('Failed to fetch full matches data');
+            setDownloadError(null);
+            // Answers are saved by the quiz page on submit
+            const answers = localStorage.getItem("answers");
+            if (!answers) {
+                setDownloadError("Retake the quiz to generate your full report.");
+                return;
             }
 
-            const fullMatchesData = await fullMatchesResponse.json();
-
-            // Format all 100 matches for the PDF
-            interface FullMatch {
-                overall: number;
-                academic: number;
-                campus: number;
-                social: number;
-                school: string;
-                program: string;
-            }
-
-            const allMatches: [number, number, number, number, string, string][] = fullMatchesData.matches.map((match: FullMatch) => [
-                match.overall,
-                match.academic,
-                match.campus,
-                match.social,
-                match.school,
-                match.program
-            ]);
-
-            // Download the PDF with all 100 matches
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/download-pdf`, {
+            const response = await fetch('/api/report-pdf', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    results: allMatches,
-                    weights: weights
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: answers,
             });
-
-            // Rest of the function remains the same...
             if (!response.ok) {
-                throw new Error('Failed to download PDF');
+                throw new Error(`Server error: ${response.status}`);
             }
 
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `LinkU_matches_${new Date().toISOString().split('T')[0]}.pdf`;
+            a.download = `UniMe_matches_${new Date().toISOString().split('T')[0]}.pdf`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
@@ -161,7 +119,7 @@ export default function Matches() {
 
         } catch (error) {
             console.error('Error downloading PDF:', error);
-            alert('Failed to download results. Please try again.');
+            setDownloadError("Couldn't create your report. Please try again.");
         } finally {
             setIsDownloading(false);
         }
@@ -210,6 +168,9 @@ export default function Matches() {
                         </>
                     )}
                 </button>
+                {downloadError && (
+                    <p role="alert" className="download-error">{downloadError}</p>
+                )}
 
                 <div className="matches-main">
                     <div className="match-list">
@@ -242,13 +203,8 @@ export default function Matches() {
                                 </div>
                             </div>
 
-                            <div className="program-info">
-                                <p>Basic info about this program and what makes it unique. This program focuses on innovative approaches to solving complex problems.</p>
-                            </div>
-
-
                             <div className="mentors-section">
-                                <h3>Connect with Student Mentors</h3>
+                                <h3>{MENTOR_HEADINGS[mentorMatch]}</h3>
                                 <div className="mentors-grid">
                                     {programMentors.length > 0 ? (
                                         programMentors.map((mentor, index) => (

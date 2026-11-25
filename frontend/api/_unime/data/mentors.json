@@ -1,0 +1,58 @@
+{
+  "mentors": [
+    {
+      "id": "1",
+      "name": "Anna Wei",
+      "school": "University of Waterloo",
+      "program": "Systems Design Engineering (Co-op Only)",
+      "year": "Second Year",
+      "details": "University of Waterloo, Second Year Systems Design Engineering",
+      "bio": "Hi! I'm a second-year Systems Design Engineering student passionate about human-centered design and technology. Happy to chat about course selection, co-op opportunities, or campus life!",
+      "avatar": "/mentors/anna-wei.jpeg",
+      "linkedin": "https://linkedin.com/in/weianna"
+    },
+    {
+      "id": "2",
+      "name": "Anson Wang",
+      "school": "Western University",
+      "program": "Computer Science",
+      "year": "Second Year",
+      "details": "Western University, Second Year Computer Science",
+      "bio": "CS student focusing on AI and machine learning. I can provide insights on course selection, internships, or general university questions!",
+      "avatar": "/mentors/anson-wang.jpeg",
+      "linkedin": "https://linkedin.com/in/ansonwnng"
+    },
+    {
+      "id": "3",
+      "name": "Kevin Li",
+      "school": "Western University",
+      "program": "Computer Science",
+      "year": "Second Year",
+      "details": "Western University, Second Year Computer Science",
+      "bio": "I tall i like volleyball and computer science. I can help with course selection, internships, or general university questions!",
+      "avatar": "/mentors/kevin-li.jpeg",
+      "linkedin": "https://linkedin.com/in/kevinli5371"
+    },
+    {
+      "id": "4",
+      "name": "Amanda Xu",
+      "school": "University of Waterloo",
+      "program": "Systems Design Engineering (Co-op Only)",
+      "year": "Second Year",
+      "details": "University of Waterloo, Second Year Systems Design Engineering",
+      "bio": "Hi! I'm a second-year Systems Design Engineering student passionate about human-centered design and technology. Happy to chat about course selection, co-op opportunities, or campus life!",
+      "avatar": "/mentors/amanda-xu.jpeg",
+      "linkedin": "https://linkedin.com/in/xu-amanda"
+    }
+  ],
+  "programMentors": {
+    "University of Waterloo_Systems Design Engineering (Co-op Only)": [
+      "1",
+      "4"
+    ],
+    "Western University_Computer Science": [
+      "2",
+      "3"
+    ]
+  }
+}
