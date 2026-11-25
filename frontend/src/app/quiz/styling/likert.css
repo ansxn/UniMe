@@ -1,7 +1,7 @@
 /* Likert Scale Component Styles */
 .likert-container {
   margin-bottom: 2rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   --likert-total: 5; /* Default, will be overridden by CSS custom property */
   text-align: center;
   max-width: 800px;
@@ -22,7 +22,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 14px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .likert-options {
@@ -159,7 +159,7 @@
 .likert-label {
   font-size: 12px;
   text-align: center;
-  color: #666;
+  color: rgba(255, 255, 255, 0.6);
   transition: color 0.2s ease;
   font-weight: 500;
 }

@@ -7,6 +7,7 @@ import './styling/likert.css'; // Import the CSS file
 import './styling/quiz.css'; // Import the CSS file for general styles
 import './styling/checkbox.css'; // Import the CSS file for checkbox styles
 import './styling/radio.css'; // Import the CSS file for radio styles
+import './styling/choices.css'; // Shared themed look for checkbox/radio answer buttons
 
 interface QuizOption {
     id: string;
@@ -224,7 +225,7 @@ export default function Quiz() {
             </h3>
 
             <p className="checkbox-selection-info">
-                Select up to {question.maxSelections} option{(question.maxSelections || 0) > 1 ? 's' : ''}
+                Select up to {question.maxSelections} option{(question.maxSelections || 0) > 1 ? 's' : ''}{' '}
                 ({selectionCount}/{question.maxSelections} selected)
             </p>
 
@@ -273,7 +274,10 @@ export default function Quiz() {
                 {question.question}
             </h3>
 
-            <div className="radio-options">
+            <div
+                className="radio-options"
+                style={{ '--radio-cols': question.options.length === 3 ? 3 : 2 } as React.CSSProperties}
+            >
                 {question.options.map((option) => {
                     const isSelected = answers[question.id] === String(option.value);
 
@@ -409,19 +413,9 @@ export default function Quiz() {
 
             <div style={{ textAlign: 'center', marginTop: '40px' }}>
                 <button
+                    className="quiz-submit"
                     disabled={!isQuizComplete() || submitting}
                     onClick={handleSubmit}
-                    style={{
-                        padding: '15px 30px',
-                        fontSize: '18px',
-                        fontWeight: 'bold',
-                        backgroundColor: isQuizComplete() && !submitting ? '#28a745' : '#ccc',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '8px',
-                        cursor: isQuizComplete() && !submitting ? 'pointer' : 'not-allowed',
-                        transition: 'background-color 0.2s ease'
-                    }}
                 >
                     {submitting ? 'Finding your matches…' : 'Submit Quiz'}
                 </button>

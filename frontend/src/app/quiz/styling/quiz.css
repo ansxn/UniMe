@@ -233,3 +233,27 @@ html.quiz-scroll {
     /* border: 2px solid white; */
     width: 80%;
 }
+.quiz-submit {
+    padding: 16px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: inherit;
+    color: white;
+    background: linear-gradient(135deg, #70B1D9 0%, #4a9aa8 50%, #36a8b4 100%);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(112, 177, 217, 0.35);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.quiz-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(54, 168, 180, 0.5);
+}
+
+.quiz-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    box-shadow: none;
+}
