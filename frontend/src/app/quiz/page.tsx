@@ -258,7 +258,12 @@ export default function Quiz() {
                 <button
                     type="button"
                     className="checkbox-continue"
-                    onClick={() => handleCheckboxContinue(question.id, questionIndex)}
+                    onClick={(e) => {
+                        // Don't let the click reach the question wrapper, whose onClick
+                        // would re-focus this question right after we advance past it.
+                        e.stopPropagation();
+                        handleCheckboxContinue(question.id, questionIndex);
+                    }}
                 >
                     Continue →
                 </button>
