@@ -1,0 +1,1002 @@
+{
+ "_doc": "Per-university campus + social table. See data-pipeline/README.md (University table).",
+ "universities": {
+  "Algoma University": {
+   "city": "Sault Ste. Marie",
+   "official_url": "https://algomau.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Traditional dorm",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 2,
+    "night_scene": 2,
+    "sports": [
+     "Hockey",
+     "Soccer",
+     "Basketball"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Brock University": {
+   "city": "St. Catharines",
+   "official_url": "https://brocku.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Suburban"
+   },
+   "social": {
+    "clubs": [
+     "Case comps",
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Carleton University": {
+   "city": "Ottawa",
+   "official_url": "https://carleton.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Urban"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Design teams",
+     "Entrepreneurship",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Lakehead University": {
+   "city": "Thunder Bay",
+   "official_url": "https://www.lakeheadu.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Environmental",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 2,
+    "night_scene": 2,
+    "sports": [
+     "Hockey",
+     "Soccer",
+     "Basketball"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Laurentian University": {
+   "city": "Sudbury",
+   "official_url": "https://laurentian.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Traditional dorm",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Volunteering",
+     "Cultural"
+    ],
+    "cultural_event_freq": 2,
+    "night_scene": 2,
+    "sports": [
+     "Hockey",
+     "Soccer"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "McMaster University": {
+   "city": "Hamilton",
+   "official_url": "https://www.mcmaster.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Suburban"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Design teams",
+     "Entrepreneurship",
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football",
+     "Rugby"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Nipissing University": {
+   "city": "North Bay",
+   "official_url": "https://www.nipissingu.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Traditional dorm",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 2,
+    "night_scene": 2,
+    "sports": [
+     "Hockey",
+     "Soccer"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "OCAD University": {
+   "city": "Toronto",
+   "official_url": "https://www.ocadu.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Off-campus"
+    ],
+    "setting": "Urban"
+   },
+   "social": {
+    "clubs": [
+     "Design teams",
+     "Performing arts",
+     "Entrepreneurship"
+    ],
+    "cultural_event_freq": 4,
+    "night_scene": 3,
+    "sports": [
+     "None"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Ontario Tech University": {
+   "city": "Oshawa",
+   "official_url": "https://ontariotechu.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Off-campus"
+    ],
+    "setting": "Suburban"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Queen's University": {
+   "city": "Kingston",
+   "official_url": "https://www.queensu.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Case comps",
+     "Design teams",
+     "Entrepreneurship",
+     "Performing arts",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 4,
+    "night_scene": 5,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football",
+     "Rugby"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Royal Military College of Canada": {
+   "city": "Kingston",
+   "official_url": "https://www.rmc-cmr.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Suite-style",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Leadership",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 2,
+    "night_scene": 2,
+    "sports": [
+     "Rugby",
+     "Football",
+     "Hockey"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Toronto Metropolitan University": {
+   "city": "Toronto",
+   "official_url": "https://www.torontomu.ca",
+   "campus": {
+    "class_size_bin": "60-200",
+    "setting": "Urban",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Off-campus"
+    ],
+    "campus_size": "Large"
+   },
+   "social": {
+    "night_scene": 5,
+    "sports": [
+     "Basketball",
+     "Hockey",
+     "Soccer",
+     "Volleyball"
+    ],
+    "clubs": [
+     "Volunteering",
+     "Performing arts",
+     "Hackathons",
+     "Entrepreneurship",
+     "Case comps",
+     "Design teams",
+     "Cultural"
+    ],
+    "cultural_event_freq": 4
+   },
+   "values_source": "curated"
+  },
+  "Trent University": {
+   "city": "Peterborough",
+   "official_url": "https://www.trentu.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Traditional dorm",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Environmental",
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Soccer",
+     "Hockey"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Trent University - Durham Greater Toronto Area": {
+   "city": "Oshawa",
+   "official_url": "https://www.trentu.ca/durham",
+   "campus": {
+    "class_size_bin": "< 60",
+    "setting": "Suburban",
+    "housing_styles": [
+     "Suite-style",
+     "Off-campus"
+    ],
+    "campus_size": "Small"
+   },
+   "social": {
+    "night_scene": 2,
+    "sports": [
+     "Basketball",
+     "Soccer"
+    ],
+    "clubs": [
+     "Volunteering",
+     "Entrepreneurship"
+    ],
+    "cultural_event_freq": 2
+   },
+   "values_source": "curated"
+  },
+  "University of Guelph": {
+   "city": "Guelph",
+   "official_url": "https://www.uoguelph.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Entrepreneurship",
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 4,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Guelph-Humber": {
+   "city": "Toronto",
+   "official_url": "https://www.guelphhumber.ca",
+   "campus": {
+    "class_size_bin": "< 60",
+    "setting": "Suburban",
+    "housing_styles": [
+     "Suite-style",
+     "Off-campus"
+    ],
+    "campus_size": "Small"
+   },
+   "social": {
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Volleyball"
+    ],
+    "clubs": [
+     "Volunteering",
+     "Performing arts",
+     "Entrepreneurship"
+    ],
+    "cultural_event_freq": 3
+   },
+   "values_source": "curated"
+  },
+  "University of Ottawa": {
+   "city": "Ottawa",
+   "official_url": "https://www.uottawa.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Urban"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Case comps",
+     "Entrepreneurship",
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 4,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Ottawa - Saint Paul University": {
+   "city": "Ottawa",
+   "official_url": "https://ustpaul.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Suite-style",
+     "Off-campus"
+    ],
+    "setting": "Urban"
+   },
+   "social": {
+    "clubs": [
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Hockey"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Toronto": {
+   "city": "Toronto",
+   "official_url": "https://www.utoronto.ca",
+   "campus": {
+    "campus_size": "Large",
+    "class_size_bin": "200+",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Urban"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Case comps",
+     "Design teams",
+     "Entrepreneurship",
+     "Performing arts",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 5,
+    "night_scene": 5,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football",
+     "Rugby"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Toronto Mississauga": {
+   "city": "Mississauga",
+   "official_url": "https://www.utm.utoronto.ca",
+   "campus": {
+    "campus_size": "Large",
+    "class_size_bin": "200+",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Suburban"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Entrepreneurship",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 4,
+    "night_scene": 4,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Toronto Scarborough": {
+   "city": "Toronto",
+   "official_url": "https://www.utsc.utoronto.ca",
+   "campus": {
+    "campus_size": "Large",
+    "class_size_bin": "200+",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Suburban"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Entrepreneurship",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 4,
+    "night_scene": 4,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Waterloo": {
+   "city": "Waterloo",
+   "official_url": "https://uwaterloo.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Design teams",
+     "Entrepreneurship",
+     "Case comps"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Waterloo - Renison University College": {
+   "city": "Waterloo",
+   "official_url": "https://uwaterloo.ca/renison",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Suite-style",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Waterloo - St. Jerome's University": {
+   "city": "Waterloo",
+   "official_url": "https://www.sju.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Suite-style",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Basketball",
+     "Soccer"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "University of Windsor": {
+   "city": "Windsor",
+   "official_url": "https://www.uwindsor.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Urban"
+   },
+   "social": {
+    "clubs": [
+     "Greek life",
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Football",
+     "Hockey",
+     "Basketball"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Western University": {
+   "city": "London",
+   "official_url": "https://www.uwo.ca",
+   "campus": {
+    "campus_size": "Large",
+    "class_size_bin": "200+",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Case comps",
+     "Design teams",
+     "Entrepreneurship",
+     "Performing arts",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 4,
+    "night_scene": 5,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football",
+     "Rugby"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Western University - Huron University College": {
+   "city": "London",
+   "official_url": "https://huronu.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Greek life",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 4,
+    "sports": [
+     "Basketball",
+     "Football",
+     "Soccer"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Western University - King's University College": {
+   "city": "London",
+   "official_url": "https://www.kings.uwo.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Greek life",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 4,
+    "sports": [
+     "Basketball",
+     "Soccer"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Wilfrid Laurier University": {
+   "city": "Waterloo",
+   "official_url": "https://www.wlu.ca",
+   "campus": {
+    "campus_size": "Medium",
+    "class_size_bin": "60-200",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Small-town"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Case comps",
+     "Entrepreneurship",
+     "Performing arts",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 4,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Football",
+     "Rugby"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "Wilfrid Laurier University - Brantford Campus": {
+   "city": "Brantford",
+   "official_url": "https://www.wlu.ca/brantford",
+   "campus": {
+    "class_size_bin": "< 60",
+    "setting": "Small-town",
+    "housing_styles": [
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "campus_size": "Small"
+   },
+   "social": {
+    "night_scene": 2,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Volleyball"
+    ],
+    "clubs": [
+     "Volunteering",
+     "Entrepreneurship",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 2
+   },
+   "values_source": "curated"
+  },
+  "Wilfrid Laurier University - Milton Campus": {
+   "city": "Milton",
+   "official_url": "https://www.wlu.ca/milton",
+   "campus": {
+    "class_size_bin": "< 60",
+    "setting": "Suburban",
+    "housing_styles": [
+     "Off-campus"
+    ],
+    "campus_size": "Small"
+   },
+   "social": {
+    "night_scene": 2,
+    "sports": [],
+    "clubs": [
+     "Volunteering"
+    ],
+    "cultural_event_freq": 2
+   },
+   "values_source": "curated"
+  },
+  "York University": {
+   "city": "Toronto",
+   "official_url": "https://www.yorku.ca",
+   "campus": {
+    "campus_size": "Large",
+    "class_size_bin": "200+",
+    "housing_styles": [
+     "Traditional dorm",
+     "Suite-style",
+     "Apartment",
+     "Off-campus"
+    ],
+    "setting": "Suburban"
+   },
+   "social": {
+    "clubs": [
+     "Hackathons",
+     "Case comps",
+     "Entrepreneurship",
+     "Performing arts",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 2,
+    "sports": [
+     "Basketball",
+     "Soccer",
+     "Hockey",
+     "Volleyball",
+     "Football"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "York University - Glendon Campus": {
+   "city": "Toronto",
+   "official_url": "https://www.glendon.yorku.ca",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Suite-style",
+     "Off-campus"
+    ],
+    "setting": "Urban"
+   },
+   "social": {
+    "clubs": [
+     "Volunteering",
+     "Performing arts"
+    ],
+    "cultural_event_freq": 3,
+    "night_scene": 3,
+    "sports": [
+     "Soccer",
+     "Basketball"
+    ]
+   },
+   "values_source": "carried_over"
+  },
+  "York University - Markham Campus": {
+   "city": "Markham",
+   "official_url": "https://www.yorku.ca/markham",
+   "campus": {
+    "campus_size": "Small",
+    "class_size_bin": "< 60",
+    "housing_styles": [
+     "Off-campus"
+    ],
+    "setting": "Suburban"
+   },
+   "social": {
+    "clubs": [
+     "Entrepreneurship",
+     "Volunteering"
+    ],
+    "cultural_event_freq": 2,
+    "night_scene": 3,
+    "sports": [
+     "Soccer"
+    ]
+   },
+   "values_source": "carried_over"
+  }
+ }
+}

@@ -49,9 +49,13 @@ def _server_error(e):
     return jsonify({"success": False, "error": getattr(e, "description", str(e))}), code
 
 
+ADMISSION_YEARS = sorted({r["year"] for r in ADMISSIONS if r.get("year")})
+
+
 @app.get("/api/health")
 def health():
-    return jsonify({"ok": True, "programs": len(PROGRAMS), "admissions_rows": len(ADMISSIONS)})
+    return jsonify({"ok": True, "programs": len(PROGRAMS), "admissions_rows": len(ADMISSIONS),
+                    "admissions_years": ADMISSION_YEARS})
 
 
 @app.post("/api/match")
@@ -75,7 +79,7 @@ def report_pdf():
 
 @app.get("/api/chance-options")
 def chance_options_api():
-    return jsonify(chance_options(ADMISSIONS))
+    return jsonify(chance_options(ADMISSIONS, PROGRAMS))
 
 
 @app.post("/api/chance-me")
@@ -96,7 +100,7 @@ def chance_me_api():
     ecs = ecs_raw if isinstance(ecs_raw, list) else str(ecs_raw).split(",")
     ecs = [str(ec).strip() for ec in ecs if str(ec).strip()]
 
-    result = predict_admission_chance(ADMISSIONS, school, program, top6, ecs)
+    result = predict_admission_chance(ADMISSIONS, school, program, top6, ecs, programs=PROGRAMS)
     return jsonify({"success": True, "prediction": result})
 
 
