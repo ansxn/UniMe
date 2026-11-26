@@ -16,3 +16,6 @@ venv/
 
 # Data pipeline raw-download cache
 data-pipeline/cache/
+
+# Claude Code agent worktrees
+.claude/worktrees/
