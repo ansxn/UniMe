@@ -1,6 +1,10 @@
 "use client";
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
+import { queuePendingSave, saveChanceCheck } from '@/lib/saved';
+import { loginHref } from '@/lib/nav';
 import './chance.css';
 
 interface ChanceMeFormData {
@@ -44,6 +48,29 @@ export default function ChanceMe() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // Accounts (hidden when Supabase isn't configured)
+    const router = useRouter();
+    const { enabled: accountsEnabled, loading: authLoading, user } = useAuth();
+    const [resultInputs, setResultInputs] = useState<ChanceMeFormData | null>(null);
+    const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+
+    const saveCheck = async (inputs: ChanceMeFormData, prediction: Prediction) => {
+        setSaveState('saving');
+        try {
+            const id = await saveChanceCheck(inputs, prediction);
+            setSaveState(id ? 'saved' : 'idle');
+        } catch (err) {
+            console.error("Couldn't save ChanceMe check:", err);
+            setSaveState('error');
+        }
+    };
+
+    const saveAsGuest = () => {
+        if (!result || !resultInputs) return;
+        queuePendingSave({ chance: { inputs: resultInputs, prediction: result } });
+        router.push(loginHref('/account', { save: true, mode: 'signup' }));
+    };
+
     useEffect(() => {
         fetch('/api/chance-options')
             .then(res => (res.ok ? res.json() : []))
@@ -77,6 +104,7 @@ export default function ChanceMe() {
         setLoading(true);
         setError(null);
         setResult(null);
+        setSaveState('idle');
 
         try {
             const response = await fetch('/api/chance-me', {
@@ -87,6 +115,9 @@ export default function ChanceMe() {
             const data = await response.json();
             if (data.success) {
                 setResult(data.prediction);
+                setResultInputs(formData);
+                // Logged-in users get every successful check saved automatically.
+                if (user && data.prediction?.found) saveCheck(formData, data.prediction);
             } else {
                 setError(data.error || 'An error occurred');
             }
@@ -101,6 +132,8 @@ export default function ChanceMe() {
     const handleReset = () => {
         setFormData(EMPTY_FORM);
         setResult(null);
+        setResultInputs(null);
+        setSaveState('idle');
         setError(null);
     };
 
@@ -237,6 +270,43 @@ export default function ChanceMe() {
                                         <p className="result-warning">
                                             Only a few past offers are on record for this program, so treat this estimate as rough.
                                         </p>
+                                    )}
+                                    {accountsEnabled && !authLoading && (
+                                        user ? (
+                                            <div className={`save-prompt save-prompt-compact ${saveState === 'saved' ? 'save-prompt-saved' : ''}`} role="status">
+                                                <div className="save-prompt-text">
+                                                    <strong>
+                                                        {saveState === 'saved' ? 'Saved to your account' : saveState === 'saving' ? 'Saving…' : 'Save this check'}
+                                                    </strong>
+                                                    <span>Compare all your checks on your account page.</span>
+                                                </div>
+                                                {saveState === 'saved' ? (
+                                                    <Link href="/account" className="acct-btn-ghost acct-btn-small">View account</Link>
+                                                ) : (
+                                                    <button
+                                                        type="button"
+                                                        className="acct-btn acct-btn-small"
+                                                        disabled={saveState === 'saving' || !resultInputs}
+                                                        onClick={() => resultInputs && saveCheck(resultInputs, result)}
+                                                    >
+                                                        {saveState === 'error' ? 'Try again' : 'Save'}
+                                                    </button>
+                                                )}
+                                                {saveState === 'error' && (
+                                                    <p className="save-prompt-error" role="alert">Couldn&apos;t save right now.</p>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div className="save-prompt save-prompt-compact">
+                                                <div className="save-prompt-text">
+                                                    <strong>Save your results</strong>
+                                                    <span>Create a free account to keep this check and compare programs later.</span>
+                                                </div>
+                                                <button type="button" className="acct-btn acct-btn-small" onClick={saveAsGuest}>
+                                                    Sign up to save
+                                                </button>
+                                            </div>
+                                        )
                                     )}
                                 </>
                             ) : (

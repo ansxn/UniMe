@@ -10,6 +10,7 @@
     "dev:api": "python3 api/index.py"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.119.2",
     "next": "^16.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

@@ -1,6 +1,19 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
+import {
+    currentQuizResultId,
+    listSavedPrograms,
+    programKey,
+    queuePendingSave,
+    quizSaveInProgress,
+    saveCurrentQuizResult,
+    saveProgram,
+    unsaveProgram,
+} from '@/lib/saved';
+import { loginHref } from '@/lib/nav';
 import './matches.css';
 
 interface Match {
@@ -41,6 +54,14 @@ export default function Matches() {
     const [mentorMatch, setMentorMatch] = useState<MentorMatch>('program');
     const [downloadError, setDownloadError] = useState<string | null>(null);
 
+    // Accounts (all hidden when Supabase isn't configured)
+    const router = useRouter();
+    const { enabled: accountsEnabled, loading: authLoading, user, savedVersion } = useAuth();
+    const [savedResultId, setSavedResultId] = useState<string | null>(null);
+    const [saveState, setSaveState] = useState<'idle' | 'saving' | 'error'>('idle');
+    const [starred, setStarred] = useState<Set<string>>(new Set());
+    const [starBusy, setStarBusy] = useState<string | null>(null);
+
     useEffect(() => {
         try {
             const data = localStorage.getItem("matches");
@@ -57,6 +78,73 @@ export default function Matches() {
             setMatches([]);
         }
     }, []);
+
+    // Is the current set of results already saved to the account?
+    useEffect(() => {
+        if (!accountsEnabled) return;
+        setSavedResultId(currentQuizResultId());
+        const inFlight = quizSaveInProgress();
+        if (inFlight) {
+            setSaveState('saving');
+            inFlight
+                .then(id => { setSavedResultId(id); setSaveState('idle'); })
+                .catch(() => setSaveState('error'));
+        }
+    }, [accountsEnabled, user, savedVersion]);
+
+    // Which programs this user has starred
+    useEffect(() => {
+        if (!user) {
+            setStarred(new Set());
+            return;
+        }
+        listSavedPrograms()
+            .then(rows => setStarred(new Set(rows.map(r => programKey(r.school, r.program)))))
+            .catch(err => console.error("Couldn't load saved programs:", err));
+    }, [user, savedVersion]);
+
+    const saveResults = async () => {
+        if (!user) {
+            queuePendingSave({ quiz: true });
+            router.push(loginHref('/matches', { save: true, mode: 'signup' }));
+            return;
+        }
+        setSaveState('saving');
+        try {
+            setSavedResultId(await saveCurrentQuizResult());
+            setSaveState('idle');
+        } catch (err) {
+            console.error("Couldn't save results:", err);
+            setSaveState('error');
+        }
+    };
+
+    const toggleStar = async (match: Match) => {
+        if (!user) {
+            queuePendingSave({ programs: [match] });
+            router.push(loginHref('/matches', { save: true }));
+            return;
+        }
+        const key = programKey(match.school, match.program);
+        const wasStarred = starred.has(key);
+        setStarBusy(key);
+        try {
+            if (wasStarred) await unsaveProgram(match.school, match.program);
+            else await saveProgram(match);
+            setStarred(prev => {
+                const next = new Set(prev);
+                if (wasStarred) next.delete(key);
+                else next.add(key);
+                return next;
+            });
+        } catch (err) {
+            console.error("Couldn't update saved program:", err);
+        } finally {
+            setStarBusy(null);
+        }
+    };
+
+    const isStarred = (match: Match) => starred.has(programKey(match.school, match.program));
 
     function handleClick(match: Match) {
         setSelectedMatch(match);
@@ -168,6 +256,50 @@ export default function Matches() {
                         </>
                     )}
                 </button>
+                {accountsEnabled && !authLoading && matches.length > 0 && (
+                    savedResultId ? (
+                        <div className="save-prompt save-prompt-saved" role="status">
+                            <div className="save-prompt-text">
+                                <strong>Saved to your account</strong>
+                                <span>Star programs below to keep a shortlist.</span>
+                            </div>
+                            <Link href="/account" className="acct-btn-ghost acct-btn-small">View account</Link>
+                        </div>
+                    ) : (
+                        <div className="save-prompt">
+                            <div className="save-prompt-text">
+                                <strong>Save your results</strong>
+                                <span>
+                                    {user
+                                        ? 'Keep these matches in your account so you can come back to them.'
+                                        : "Create a free account to keep these matches and star programs. You'll come right back here."}
+                                </span>
+                            </div>
+                            <div className="acct-actions">
+                                {!user && (
+                                    <Link
+                                        href={loginHref('/matches', { save: true })}
+                                        onClick={() => queuePendingSave({ quiz: true })}
+                                        className="acct-btn-ghost acct-btn-small"
+                                    >
+                                        Log in
+                                    </Link>
+                                )}
+                                <button
+                                    type="button"
+                                    className="acct-btn acct-btn-small"
+                                    onClick={saveResults}
+                                    disabled={saveState === 'saving'}
+                                >
+                                    {saveState === 'saving' ? 'Saving…' : user ? 'Save results' : 'Sign up to save'}
+                                </button>
+                            </div>
+                            {saveState === 'error' && (
+                                <p className="save-prompt-error" role="alert">Couldn&apos;t save right now. Please try again.</p>
+                            )}
+                        </div>
+                    )
+                )}
                 {downloadError && (
                     <p role="alert" className="download-error">{downloadError}</p>
                 )}
@@ -183,6 +315,22 @@ export default function Matches() {
                                 <h3 className="match-school">{match.school}</h3>
                                 <p className="match-program">{match.program}</p>
                                 <p className="match-score">Overall: {formatPercentage(match.overall)}</p>
+                                {accountsEnabled && !authLoading && (
+                                    <button
+                                        type="button"
+                                        className={`star-button ${isStarred(match) ? 'starred' : ''}`}
+                                        aria-pressed={isStarred(match)}
+                                        aria-label={`${isStarred(match) ? 'Remove' : 'Save'} ${match.program} at ${match.school}`}
+                                        title={isStarred(match) ? 'Saved (click to remove)' : 'Save this program'}
+                                        disabled={starBusy === programKey(match.school, match.program)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleStar(match);
+                                        }}
+                                    >
+                                        {isStarred(match) ? '★' : '☆'}
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -192,6 +340,19 @@ export default function Matches() {
                             <div className="popup-header">
                                 <h2>{selectedMatch.school}</h2>
                                 <p className="program-subtitle">{selectedMatch.program}</p>
+                                {accountsEnabled && !authLoading && (
+                                    <div className="popup-star">
+                                        <button
+                                            type="button"
+                                            className={`acct-btn-ghost acct-btn-small ${isStarred(selectedMatch) ? 'starred' : ''}`}
+                                            aria-pressed={isStarred(selectedMatch)}
+                                            disabled={starBusy === programKey(selectedMatch.school, selectedMatch.program)}
+                                            onClick={() => toggleStar(selectedMatch)}
+                                        >
+                                            {isStarred(selectedMatch) ? '★ Saved program' : '☆ Save this program'}
+                                        </button>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="match-stats">

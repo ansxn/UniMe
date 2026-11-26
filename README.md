@@ -52,6 +52,21 @@ python -m pytest tests -q
 
 The Vercel project's **Root Directory must be `frontend`**. Vercel detects Next.js, installs `requirements.txt` for the Python function, and applies `vercel.json`. No environment variables are required. Pushes to `main` deploy to production, and pull requests get preview deployments.
 
+## Accounts (optional, Supabase)
+
+Accounts let students save their results. They never gate anything: guests can still take the quiz and use ChanceMe.
+
+- **Sign up, log in, log out, and forgot/reset password** use email and password through Supabase Auth, and Supabase sends the emails. The pages are `/login` (log in, sign up, or forgot password, chosen by `?mode=`), `/reset-password` (where the reset email lands), and `/account`.
+- **What gets saved:** each quiz attempt (answers, the `/api/match` response, and a timestamp), each ChanceMe check that finds the program (inputs and `prediction`), and programs starred on `/matches`. `/account` lists all three with delete buttons, and clicking a quiz result reopens it in `/matches`. It also has the profile (display name, optional grad year) and log out.
+- **Guest flow:** after results show, a "Save your results" prompt appears. Whatever the guest asked to save is queued in localStorage (`unime:pending`). After they sign up or log in, it is saved automatically and they return to the page they came from. For logged-in users, quiz attempts and ChanceMe checks are saved automatically.
+- **Code:** `src/lib/supabase.ts` (the single browser client), `src/lib/saved.ts` (data access and pending saves), `src/components/AuthProvider.tsx` and `AuthPill.tsx` (session context and the top-right pill), and `src/app/accounts.css`.
+
+**Setup**
+
+1. Apply `supabase/migrations/20261125000000_accounts.sql`, either with `supabase db push` or by pasting it into the SQL editor. It creates `profiles` (filled by a signup trigger), `quiz_results`, `chance_checks`, and `saved_programs`, all with row-level security that limits each user to their own rows.
+2. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (or the legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY`) in `frontend/.env.local` and in the Vercel project. See `frontend/.env.example`. Both values are public. **If they're unset, accounts are off:** the auth UI is hidden and the app works exactly as it does without accounts.
+3. In Supabase, open Auth → URL Configuration. Set the Site URL to the production domain and add redirect URLs for `http://localhost:3000/**`, the production domain `/**`, and Vercel preview URLs if wanted. Sign-up confirmation and password-reset links come back to these URLs.
+
 ## Data notes
 
 - `program_profiles.json`: 1,399 program profiles. About 150 have no campus data and get a neutral campus score.

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import quizData from './questions.json';
+import { markQuizResultsUnsaved, saveCurrentQuizResult } from '@/lib/saved';
 import './styling/likert.css'; // Import the CSS file
 import './styling/quiz.css'; // Import the CSS file for general styles
 import './styling/checkbox.css'; // Import the CSS file for checkbox styles
@@ -205,6 +206,10 @@ export default function Quiz() {
             localStorage.setItem("matches", JSON.stringify(matches));
             // The matches page re-sends these to build the full PDF report.
             localStorage.setItem("answers", JSON.stringify(answers));
+            // New results: save them for logged-in users (no-op for guests or
+            // when accounts are off). Don't hold up navigation on it.
+            markQuizResultsUnsaved();
+            saveCurrentQuizResult().catch((err) => console.error("Couldn't save quiz result:", err));
             router.push("/matches");
         } catch (error) {
             console.error("Quiz submit error:", error);

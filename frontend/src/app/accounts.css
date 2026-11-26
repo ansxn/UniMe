@@ -1,0 +1,672 @@
+/*
+ * Accounts UI: auth pill, login / reset / account pages, and the
+ * "save your results" prompts + star buttons on /matches and /chance.
+ * Same language as the rest of the site: painted cosmic backgrounds,
+ * frosted dark glass, pill buttons with the teal→blue gradient.
+ */
+:root {
+  --acct-gradient: linear-gradient(135deg, #70B1D9 0%, #4a9aa8 50%, #36a8b4 100%);
+  --acct-accent: #70B1D9;
+  --acct-glass: rgba(255, 255, 255, 0.06);
+  --acct-glass-border: rgba(255, 255, 255, 0.16);
+  --acct-muted: rgba(255, 255, 255, 0.7);
+  --acct-error: #ffb4b4;
+}
+
+/* ---------- Auth pill (top-right, mirrors .back-button) ---------- */
+.auth-pill {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(240px, calc(100vw - 220px));
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 25px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  z-index: 300;
+}
+
+.auth-pill:hover,
+.auth-pill-active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
+}
+
+.auth-pill:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+
+.auth-pill-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--acct-gradient);
+  box-shadow: 0 0 8px rgba(112, 177, 217, 0.8);
+}
+
+.auth-pill-name {
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .auth-pill {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    max-width: calc(100vw - 190px);
+  }
+}
+
+/* ---------- Page shell ---------- */
+.acct-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: url('./backgrounds/matches.webp') no-repeat center top;
+  background-size: cover;
+  color: white;
+}
+
+.acct-page.acct-page-quiz-bg {
+  background-image: url('./backgrounds/quiz.webp');
+}
+
+.acct-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 0;
+}
+
+.acct-page .back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 25px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.acct-page .back-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
+  transform: translateX(-5px);
+}
+
+.acct-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 110px 16px 80px;
+}
+
+.acct-inner.acct-narrow {
+  max-width: 460px;
+}
+
+.acct-eyebrow {
+  color: #4A9FE7;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.acct-title {
+  font-size: 2.6rem;
+  font-weight: bold;
+  line-height: 1.1;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.acct-subtitle {
+  color: var(--acct-muted);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 36px;
+}
+
+/* ---------- Glass panel ---------- */
+.acct-panel {
+  background: var(--acct-glass);
+  border: 1.5px solid var(--acct-glass-border);
+  border-radius: 24px;
+  padding: 28px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  margin-bottom: 28px;
+}
+
+.acct-panel h2 {
+  font-size: 1.35rem;
+  margin-bottom: 4px;
+}
+
+.acct-panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.acct-panel-head .acct-count {
+  color: var(--acct-muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- Tabs (log in / sign up) ---------- */
+.acct-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  margin-bottom: 24px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1.5px solid var(--acct-glass-border);
+}
+
+.acct-tab {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.acct-tab:hover {
+  color: white;
+  background: rgba(112, 177, 217, 0.14);
+}
+
+.acct-tab[aria-selected="true"] {
+  color: white;
+  background: var(--acct-gradient);
+  box-shadow: 0 4px 16px rgba(54, 168, 180, 0.4);
+}
+
+/* ---------- Form controls (dark, never default white) ---------- */
+.acct-field {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.acct-field > span {
+  display: block;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.acct-field small {
+  display: block;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.82rem;
+  margin-top: 6px;
+}
+
+.acct-input {
+  width: 100%;
+  padding: 13px 18px;
+  font: inherit;
+  font-size: 1rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1.5px solid var(--acct-glass-border);
+  border-radius: 14px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  color-scheme: dark;
+}
+
+.acct-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.acct-input:hover {
+  border-color: rgba(112, 177, 217, 0.6);
+}
+
+.acct-input:focus {
+  outline: none;
+  border-color: var(--acct-accent);
+  background: rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 3px rgba(112, 177, 217, 0.25);
+}
+
+.acct-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Chrome autofill would otherwise paint the field pale yellow/white */
+.acct-input:-webkit-autofill {
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0 1000px #0d1a26 inset;
+  caret-color: white;
+}
+
+.acct-form-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 560px) {
+  .acct-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* ---------- Buttons ---------- */
+.acct-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 30px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  background: var(--acct-gradient);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(112, 177, 217, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.acct-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(112, 177, 217, 0.45);
+}
+
+.acct-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.acct-btn:focus-visible,
+.acct-btn-ghost:focus-visible,
+.acct-link:focus-visible,
+.acct-icon-btn:focus-visible,
+.star-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+
+.acct-btn-block {
+  width: 100%;
+}
+
+.acct-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 24px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.acct-btn-ghost:hover:not(:disabled) {
+  border-color: var(--acct-accent);
+  background: rgba(112, 177, 217, 0.14);
+}
+
+.acct-btn-ghost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.acct-btn-small {
+  padding: 8px 18px;
+  font-size: 0.88rem;
+}
+
+.acct-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--acct-accent);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.acct-link:hover {
+  text-decoration: underline;
+}
+
+.acct-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.acct-footer-links {
+  margin-top: 18px;
+  text-align: center;
+  color: var(--acct-muted);
+  font-size: 0.92rem;
+}
+
+/* ---------- Messages ---------- */
+.acct-error,
+.acct-notice {
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+
+.acct-error {
+  color: var(--acct-error);
+  background: rgba(255, 90, 90, 0.12);
+  border: 1.5px solid rgba(255, 120, 120, 0.35);
+}
+
+.acct-notice {
+  color: white;
+  background: rgba(112, 177, 217, 0.14);
+  border: 1.5px solid rgba(112, 177, 217, 0.45);
+}
+
+.acct-muted {
+  color: var(--acct-muted);
+}
+
+.acct-empty {
+  color: var(--acct-muted);
+  font-size: 0.95rem;
+  padding: 6px 0 2px;
+}
+
+.acct-empty a {
+  color: var(--acct-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ---------- Lists on /account ---------- */
+.acct-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acct-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.acct-item-clickable {
+  cursor: pointer;
+}
+
+.acct-item-clickable:hover,
+.acct-item-clickable:focus-visible {
+  outline: none;
+  border-color: var(--acct-accent);
+  background: rgba(112, 177, 217, 0.12);
+  transform: translateY(-2px);
+}
+
+.acct-item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.acct-item-title {
+  color: white;
+  font-weight: 600;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.acct-item-sub {
+  color: var(--acct-muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+}
+
+.acct-item-badge {
+  flex-shrink: 0;
+  min-width: 64px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--acct-gradient);
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.acct-icon-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.acct-icon-btn:hover:not(:disabled) {
+  color: var(--acct-error);
+  border-color: rgba(255, 120, 120, 0.6);
+  background: rgba(255, 90, 90, 0.12);
+}
+
+.acct-icon-btn:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+
+@media (max-width: 560px) {
+  .acct-title {
+    font-size: 2rem;
+  }
+  .acct-panel {
+    padding: 20px 16px;
+  }
+  .acct-item {
+    padding: 14px;
+    gap: 10px;
+  }
+  .acct-item-badge {
+    min-width: 52px;
+    padding: 5px 8px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ---------- "Save your results" prompt (/matches, /chance) ---------- */
+.save-prompt {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto 40px;
+  padding: 18px 24px;
+  border-radius: 24px;
+  background: var(--acct-glass);
+  border: 1.5px solid var(--acct-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.save-prompt-text {
+  flex: 1;
+  min-width: 220px;
+}
+
+.save-prompt-text strong {
+  display: block;
+  color: white;
+  font-size: 1.05rem;
+  margin-bottom: 2px;
+}
+
+.save-prompt-text span {
+  color: var(--acct-muted);
+  font-size: 0.92rem;
+}
+
+.save-prompt-saved strong::before {
+  content: '✓ ';
+  color: #7fd6dd;
+}
+
+.save-prompt-error {
+  color: var(--acct-error);
+  font-size: 0.88rem;
+  width: 100%;
+}
+
+/* Inside the ChanceMe result card */
+.save-prompt.save-prompt-compact {
+  margin: 20px 0 0;
+  padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Star (save program) buttons ---------- */
+.match {
+  position: relative;
+}
+
+.star-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.match .star-button {
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  transform: translateY(-50%);
+}
+
+.match:has(.star-button) {
+  padding-right: 80px;
+}
+
+.star-button:hover:not(:disabled) {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.star-button.starred {
+  border-color: transparent;
+  background: var(--acct-gradient);
+  box-shadow: 0 4px 16px rgba(54, 168, 180, 0.5);
+}
+
+.star-button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.popup-star {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.popup-star .acct-btn-ghost {
+  border-color: rgba(0, 58, 90, 0.5);
+  color: #003A5A;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.popup-star .acct-btn-ghost:hover:not(:disabled) {
+  border-color: #003A5A;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.popup-star .acct-btn-ghost.starred {
+  background: #003A5A;
+  border-color: #003A5A;
+  color: white;
+}
