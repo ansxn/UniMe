@@ -692,3 +692,17 @@
   from { transform: scale(0.4); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+
+/* ---------- 404 (not-found.tsx) ---------- */
+.nf-code {
+  font-size: clamp(5rem, 18vw, 8rem);
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  margin-bottom: 12px;
+  background: var(--acct-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 6px 24px rgba(54, 168, 180, 0.4));
+}
