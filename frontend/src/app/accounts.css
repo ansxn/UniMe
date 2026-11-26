@@ -670,3 +670,25 @@
   border-color: #003A5A;
   color: white;
 }
+
+/* ---------- Email confirmed (/auth/confirm) ---------- */
+.acct-confirm-badge {
+  width: 72px;
+  height: 72px;
+  margin: 4px auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: white;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #70B1D9 0%, #4a9aa8 50%, #36a8b4 100%);
+  box-shadow: 0 8px 30px rgba(54, 168, 180, 0.45);
+  animation: acctConfirmPop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+@keyframes acctConfirmPop {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

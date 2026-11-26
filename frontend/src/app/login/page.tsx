@@ -70,7 +70,7 @@ export default function LoginPage() {
           password,
           options: {
             data: { display_name: displayName.trim() || null },
-            emailRedirectTo: `${window.location.origin}${next}`,
+            emailRedirectTo: `${window.location.origin}/auth/confirm?next=${encodeURIComponent(next)}`,
           },
         });
         if (error) throw error;
