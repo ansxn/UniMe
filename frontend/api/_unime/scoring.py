@@ -1,6 +1,8 @@
 """MatchMe scoring: ranks university programs against a student's quiz answers."""
 import json
 
+from .schools import clean_name
+
 # Keyword -> program-type category. Used by detect_program_type() to pick the
 # PROGRAM_TYPE_WEIGHTS adjustments below.
 INTEREST_MAPPINGS = {
@@ -527,7 +529,7 @@ def load_programs(path):
         raw = json.load(f)
     seen, programs = set(), []
     for p in raw:
-        p['uni'] = " ".join(p['uni'].replace('–', '-').replace('—', '-').split())
+        p['uni'] = clean_name(p['uni'])
         key = (p['uni'], p['program'])
         if key in seen:
             continue

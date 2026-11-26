@@ -54,6 +54,13 @@ The Vercel project's **Root Directory must be `frontend`**. Vercel detects Next.
 
 ## Data notes
 
-- `program_profiles.json`: 1,399 program profiles. About 150 have no campus data and get a neutral campus score.
-- `admissionsData.csv`: about 2,000 crowd-sourced results. Many programs have only a handful of offers, and the UI flags estimates built on fewer than 5.
+The data is rebuilt by the pipeline in [`data-pipeline/`](data-pipeline/README.md) (`cd data-pipeline && python run_all.py`). That README lists sources, retrieval dates and cleaning rules.
+
+- `program_profiles.json`: 1,393 Ontario programs. Each program has:
+  - quiz traits (`academic`, `campus`, `social`)
+  - a `facts` object: city, co-op, degree, prerequisites, official admission range, sources
+  - `trait_source`, which records whether each section was carried over from the June 2025 profiles or filled or derived by the pipeline
+
+  Every program now has campus data; the 156 that had none are filled from a curated per-university table. OUInfo blocks automated access, so official prerequisites and admission ranges are only present for programs added through `data-pipeline/manual/official_programs.csv`.
+- `admissionsData.csv`: about 3,900 crowd-sourced results from the r/OntarioGrade12s sheets for three cycles (2023, 2024, 2025 entry). It has canonical school names and a `year` column. ChanceMe weights recent cycles more, and blends with the official range when a program has few offers. The prediction's `basis` field reports which data was used. The UI still flags estimates built on fewer than 5 offers.
 - To add a mentor, add an entry to `data/mentors.json`, put the photo in `public/mentors/`, and map `"<uni>_<program>"` (exactly as written in `program_profiles.json`) to the mentor's id under `programMentors`.

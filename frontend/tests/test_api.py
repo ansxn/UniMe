@@ -102,7 +102,7 @@ def test_chance_me_accepts_school_aliases(client, school):
     res = client.post("/api/chance-me", json={"school": school, "program": "Software Engineering",
                                                "top6": 93, "ecs": "robotics, student council, volunteering"})
     pred = res.get_json()["prediction"]
-    assert pred["found"] and pred["school"] == "Waterloo"
+    assert pred["found"] and pred["school"] == "University of Waterloo"
     assert 0 < pred["chance"] < 100
     assert pred["sample_size"] > 5
 
@@ -122,7 +122,7 @@ def test_chance_me_validation(client, bad):
 def test_chance_options(client):
     opts = client.get("/api/chance-options").get_json()
     schools = {o["school"] for o in opts}
-    assert {"Waterloo", "Western", "McMaster"} <= schools
+    assert {"University of Waterloo", "Western University", "McMaster University"} <= schools
 
 
 def test_mentors_for_program_and_fallbacks(client):
